@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册消防工程师-技术实务 (交互增强版)</title>
+    <style>
+        /* --- 全局样式优化 --- */
+        body {
+            /*
+             * font-family: 字体族。用于指定元素的字体。
+             * - "PingFang SC", "Microsoft YaHei": 优先使用苹果和Windows系统下美观的中文字体。
+             * - sans-serif: 无衬线字体系。如果前面的字体都不可用，则使用浏览器默认的无衬线字体。
+             */
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #F0F2F5; /* 使用一个更柔和、现代的浅灰色背景 */
+            color: #333; /* 设置基础文字颜色为深灰色，提高可读性 */
+            padding: 20px;
+        }
+        
+        /* --- 标题样式优化 --- */
+        .page-title {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto 40px auto; /* 上0 左右自动 下40 */
+            text-align: center; /* 文本居中 */
+            color: #2c3e50; /* 标题颜色 */
+            border-bottom: 3px solid #5C7DA8; /* 标题下划线，增加设计感 */
+            padding-bottom: 15px; /* 内边距-底部 */
+        }
+        
+        /* --- 题目区块样式优化 --- */
+        .qa-block {
+            max-width: 900px;
+            margin: 20px auto; /* 左右自动居中，上下间距20px */
+            padding: 25px 30px; /* 增加内部空间 */
+            border: 1px solid #e0e0e0;
+            border-radius: 12px; /* 更大的圆角 */
+            background-color: #ffffff;
+            /*
+             * box-shadow: 盒子阴影。为元素添加阴影。
+             * 0 5px 20px -5px rgba(0,0,0,0.1): 水平偏移0, 垂直偏移5px, 模糊半径20px, 扩散半径-5px, 颜色为10%不透明度的黑色。
+             */
+            box-shadow: 0 5px 20px -5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .qa-block:hover {
+             /*
+             * transform: 变形。用于对元素进行移动、缩放、旋转或倾斜。
+             * translateY(-3px): 沿Y轴向上移动3个像素。
+             */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px -5px rgba(0,0,0,0.15);
+        }
+
+        .qa-block p {
+            font-size: 19px; /* 略微增大问题字号 */
+            line-height: 1.7; /* 增大行高 */
+        }
+
+        .qa-block p strong {
+             /* 优化题目序号的样式 */
+            color: #5C7DA8; /* 设置为主题色 */
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        /* --- 答案交互样式优化 --- */
+        .blur-text {
+            filter: blur(5px); /* 降低模糊度，更易于定位点击 */
+            cursor: pointer;
+            transition: filter 0.3s ease-out;
+            background-color: #f0f0f0;
+            padding: 0 5px;
+            border-radius: 4px;
+        }
+        /* 答案被揭示后的样式 */
+        .blur-text.revealed {
+            filter: none;
+            background-color: transparent;
+            color: #D9534F; /* 红色，醒目 */
+            font-weight: bold;
+            padding: 0;
+        }
+
+        /* --- 选项列表样式优化 --- */
+        .qa-block ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        .qa-block li {
+            margin-bottom: 8px;
+            font-size: 18px;
+            line-height: 1.6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            cursor: pointer; /* 鼠标悬停时显示为手型 */
+        }
+
+        .qa-block li:hover {
+            background-color: #e9ecef; /* 鼠标悬停时增加背景色 */
+        }
+
+        /* --- 新增：答题反馈样式 --- */
+        /* 正确答案样式 */
+        .qa-block li.correct {
+            background-color: #28a745 !important; /* 绿色背景 */
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 错误答案样式 (瞬时) */
+        .qa-block li.incorrect {
+            background-color: #dc3545 !important; /* 红色背景 */
+            color: white;
+        }
+        
+        /* 新增：抖动动画 */
+        .qa-block li.shake {
+            /* * animation: 动画。用于将动画效果应用到元素上。
+             * - shake: 动画名称，对应 @keyframes shake。
+             * - 0.5s: 动画持续时间为0.5秒。
+             * - ease-in-out: 动画速度曲线，慢-快-慢。
+             */
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* * @keyframes: 关键帧。用于定义CSS动画的中间步骤。
+         * 英文 keyframes 意为“关键帧”，是动画制作中的术语。
+         */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+
+        /* --- “相关知识”区域样式优化 --- */
+        .qa-block details {
+            margin-top: 20px;
+        }
+
+        .qa-block summary {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            color: #5C7DA8; /* 主题色 */
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            transition: background-color 0.2s ease;
+        }
+
+        .qa-block summary:hover {
+            background-color: #e9ecef;
+        }
+
+        /* 定义一个高亮文本的通用类，替代<font>标签 */
+        .highlight {
+            color: #007BFF; /* 使用蓝色高亮 */
+            font-weight: bold;
+        }
+
+        /* --- 统一的表格样式 (重点优化) --- */
+        .knowledge-table {
+            /*
+             * border-collapse: 边框合并。设置表格的边框是否被合并为一个单一的边框。
+             * - collapse: 来自英文单词 collapse，中文释义为“折叠、合并”。
+             */
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .knowledge-table th, .knowledge-table td {
+            border-bottom: 1px solid #dee2e6; /* 只保留底部边框，更简洁 */
+            padding: 12px 15px; /* 增加单元格内边距 */
+            text-align: left; /* 文本左对齐 */
+        }
+
+        .knowledge-table thead th {
+            background-color: #f8f9fa; /* 表头背景色 */
+            font-weight: bold;
+            color: #495057;
+            border-bottom-width: 2px; /* 加粗表头下边框 */
+        }
+
+        /*
+         * :nth-child(even): 伪类选择器。选择属于其父元素的偶数子元素。
+         * - nth: "第n个" 的缩写。
+         * - child: 来自英文单词 child，中文释义为“孩子”。
+         * - even: 来自英文单词 even，中文释义为“偶数”。
+         * 这里用于创建“斑马纹”或“条纹”表格，提高可读性。
+         */
+        .knowledge-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .knowledge-table td:first-child,
+        .knowledge-table th:first-child {
+            font-weight: bold; /* 第一列内容加粗，突出类别 */
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="page-title">
+        <h1><strong>注册消防工程师-技术实务&nbsp;交互练习题</strong></h1>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>1.</strong> 下列物质发生的火灾中，不属于A类火灾的是（<span class="blur-text">C</span>）</p>
+        <ul>
+            <li>A. 松香</li>
+            <li>B. 焦炭</li>
+            <li>C. 沥青</li>
+            <li>D. 橡胶</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <h3>按照燃烧对象的性质分类：</h3>
+            <table class="knowledge-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">类别</th>
+                        <th>举例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A类火灾</td>
+                        <td>固体物质火灾</td>
+                        <td>木材、棉、毛、麻、纸张</td>
+                    </tr>
+                    <tr>
+                        <td>B类火灾</td>
+                        <td>液体或可融化固体物质火灾</td>
+                        <td>汽油、煤油、原油、甲醇、乙醇、<span class="highlight">沥青</span>、石蜡</td>
+                    </tr>
+                    <tr>
+                        <td>C类火灾</td>
+                        <td>气体火灾</td>
+                        <td>煤气、天然气、甲烷、乙烷、氢气、乙炔</td>
+                    </tr>
+                    <tr>
+                        <td>D类火灾</td>
+                        <td>金属火灾</td>
+                        <td>钾、钠、镁、钛、锆、锂</td>
+                    </tr>
+                    <tr>
+                        <td>E类火灾</td>
+                        <td>带电火灾</td>
+                        <td>变压器等设备的电气火灾</td>
+                    </tr>
+                    <tr>
+                        <td>F类火灾</td>
+                        <td>烹饪器具内的烹饪物火灾</td>
+                        <td>动物油脂或植物油脂火灾</td>
+                    </tr>
+                </tbody>
+            </table>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>2.</strong> 某建筑发生火灾，造成1人死亡，10人重伤，直接经济损失5000万元，则该起火灾损失分类属于（<span class="blur-text">B</span>）</p>
+        <ul>
+            <li>A. 特别重大火灾</li>
+            <li>B. 重大火灾</li>
+            <li>C. 较大火灾</li>
+            <li>D. 一般火灾</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <table class="knowledge-table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>死亡人数(P/人)</th>
+                        <th>重伤人数(N/人)</th>
+                        <th>直接经济损失(M/元)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>特别重大火灾</td>
+                        <td>P&ge;30</td>
+                        <td>N&ge;100</td>
+                        <td>M&ge;1亿</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">重大火灾</span></td>
+                        <td>10&le;P<30</td>
+                        <td>50&le;P<100</td>
+                        <td><span class="highlight">5000万&le;M<1亿</span></td>
+                    </tr>
+                    <tr>
+                        <td>较大火灾</td>
+                        <td>3&le;P<10</td>
+                        <td><span class="highlight">10&le;N<50</span></td>
+                        <td>1000万&le;M<5000万</td>
+                    </tr>
+                    <tr>
+                        <td>一般火灾</td>
+                        <td><span class="highlight">P<3</span></td>
+                        <td>N<10</td>
+                        <td>M<1000万</td>
+                    </tr>
+                </tbody>
+            </table>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>3.</strong> 某建筑内的厨房操作间发生火灾，厨房内的油桶受热爆炸，该爆炸属于（<span class="blur-text">A</span>）</p>
+        <ul>
+            <li>A. 物理爆炸</li>
+            <li>B. 化学爆炸</li>
+            <li>C. 液体爆炸</li>
+            <li>D. 挥发爆炸</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <p>
+                按物质产生爆炸的原因和性质不同，通常将爆炸分为<span class="highlight">物理爆炸</span>、<span class="highlight">化学爆炸</span>和<span class="highlight">核爆炸</span>三种。<br><br>
+                <strong>物理爆炸：</strong>物质因状态变化导致压力发生突变而形成的爆炸叫做物理爆炸。其特点是<span class="highlight">爆炸前后物质的化学成分均不改变。</span><br><br>
+                <strong>化学爆炸：</strong>是指由于物质急剧氧化或分解产生温度、压力增加或两者同时增加而形成的爆炸现象。化学<span class="highlight">爆炸前后，物质的化学成分和性质均发生了根本的变化。</span><br><br>
+                <strong>核爆炸：</strong>由原子核裂变或聚变反应释放出核能所形成的爆炸，成为核爆炸。例如原子弹、氢弹、中子弹的爆炸都属于核爆炸。
+            </p>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>4.</strong> 【多选】下列物品中，储存与生产火灾危险性类别不同的有（<span class="blur-text">C D E</span>）</p>
+        <ul>
+            <li>A. 铝粉</li>
+            <li>B. 竹藤家具</li>
+            <li>C. 漆布</li>
+            <li>D. 桐油织布</li>
+            <li>E. 谷物面粉</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <table>
+                <thead>
+                    <tr>
+                        <th>物品</th>
+                        <th>生产火灾危险性</th>
+                        <th>存储火灾危险性</th>
+                    </tr>
+                    <tr>
+                        <td>铝粉</td>
+                        <td>乙类</td>
+                        <td>乙类</td>
+                    </tr>
+                    <tr>
+                        <td>竹藤家具</td>
+                        <td>丙类</td>
+                        <td>丙类</td>
+                    </tr>
+                    <tr>
+                        <td>漆布</td>
+                        <td>丙类</td>
+                        <td>乙类</td>
+                    </tr>
+                    <tr>
+                        <td>桐油织布</td>
+                        <td>丙类</td>
+                        <td>乙类</td>
+                    </tr>
+                    <tr>
+                        <td>谷物面粉</td>
+                        <td>乙类</td>
+                        <td>丙类</td>
+                    </tr>
+                </thead>
+            </table>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>5.</strong> 某百货仓库存有陶瓷器具、玻璃制品、塑料玩具、自行车。该仓库的火灾危险性类别应确定为（<span class="blur-text">C</span>）</p>
+        <ul>
+            <li>A. 甲类</li>
+            <li>B. 乙类</li>
+            <li>C. 丙类</li>
+            <li>D. 丁类</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <p>
+                <h3>同一座仓库或仓库的任一防火分区内，存储有不同火灾危险的物品时，如何确定其火灾危险性❔</h3>
+            </p>
+            <p>
+                <strong>一般规定：</strong>按火灾危险性最大的物品确定<br>
+                <strong>特殊规定：</strong><font color=blue>丁、戊类</font>储存物品仓库的火灾危险性，当&nbsp;<sup>可燃包装重量</sup>/<sub>物品本身重量</sub> <font color=blue>&gt; <sup>1</sup>/<sub>4</sub></font> ，或&nbsp;<sup>可燃包装体积</sup>/<sub>物品本身体积</sub> <font color=blue>&gt; <sup>1</sup>/<sub>2</sub></font> ，应按<font color=blue>丙类</font>确定。
+            </p>
+            <p>
+                陶瓷 == 戊<br>
+                玻璃 == 戊<br>
+                塑料 == 丙<br>
+                自行车 == 丙
+            </p>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>6.</strong> 下列储存物品中，不属于乙类火灾危险性分类的是（<span class="blur-text">B</span>）</p>
+        <ul>
+            <li>A. 煤油</li>
+            <li>B. 乙烯</li>
+            <li>C. 油布</li>
+            <li>D. 硝酸铜</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <style>
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    padding: 8px;
+                }
+                .center-cell {
+                    text-align: center;		/* 水平居中 */
+                    vertical-align: middle;		/* 垂直居中 */
+                    height: 50px;	/* 确保有足够的高度以看到垂直居中效果 */
+                    background-color: lightblue; 	/* 方便识别 */
+                }
+            </style>
+            <table>
+                <thead>
+                    <tr><th rowspan="7" calss="center-cell">甲</th></tr>
+                    <tr><td>1. 闪点 &lt; 28&deg;C 的液体</td><td>乙烷、戊烷、石脑油、环戊烷、二硫化碳、苯、甲苯、甲醇、乙醇、乙醚、甲酸甲酯、醋酸甲酯、硝酸乙酯、汽油、丙酮、丙烯、酒精度为38&deg;C以上的白酒</td></tr>
+                    <tr><td>2. ①爆炸下限 &lt; 10% 的气体<br>&emsp;②受到水或空气中水蒸气的作用能产生爆炸下限 &lt; 10% 气体的固体物质</td><td>乙炔、氢、甲烷、乙烯、丙烯、丁二烯、环氧乙烷、水煤气、硫化氢、氯乙烯、液化石油气、碳化钙、碳化铝</td></tr>
+                    <tr><td>3. 常温下能自行分解或在空气中氧化能导致迅速自燃或爆炸的物质</td><td>硝化棉、硝化纤维胶片、喷漆棉、火胶棉、赛璐珞棉、黄磷</td></tr>
+                    <tr><td>4. 常温下受到水或空气中水蒸气的作用能产生可燃气体并引起燃烧或爆炸的物质</td><td>金属钾、钠、锂、钙、锹、氢化锂、氢化钠、四氢化锂铝</td></tr>
+                    <tr><td>5. 遇酸、受热、撞击、摩擦以及遇有机物或硫磺等易燃的无机物，极易引起燃烧或爆炸的强氧化剂</td><td>氯酸钾、氯酸钠、过氧化钾、过氧化钠、硝酸铵</td></tr>
+                    <tr><td>6. 受撞击、摩擦或与氧化剂、有机物接触时能引起燃烧或爆炸的物质（燃点低、易燃烧、不稳定、燃烧速度快、燃烧产物毒性大）</td><td>赤磷、五硫化二磷、三硫化二磷</td></tr>
+                </thead>
+            </table>
+            <table>
+                <thead>
+                    <tr><th rowspan="7" class="center-cell">乙</th></tr>
+                    <tr><td>1. 液体：28&deg;C &le; 闪点 &lt;60&deg;C</td><td>煤油、松节油、丁烯醇、异戊醇、丁醍、醋酸丁酯、硝酸戊酯、乙酰丙酮、环己胺、溶剂油、冰醋酸、樟脑油、甲酸</td></tr>
+                    <tr><td>2. 气体：爆炸下限 &ge; 10%</td><td>氨气、一氧化碳</td></tr>
+                    <tr><td>3. 不属于甲类的氧化剂</td><td>硝酸铜、铬酸、亚硝酸钾、重铬酸钠、铬酸钠、硝酸、硝酸汞、硝酸钴、发烟硫酸、漂白粉</td></tr>
+                    <tr><td>4. 不属于甲类的易燃固体</td><td>硫磺、镁粉、铝粉、赛璐珞板（片）、樟脑、萘、生松香、硝化纤维漆布、硝化纤维色片</td></tr>
+                    <tr><td>5. 助燃气体</td><td>氧气、氟气、液氯</td></tr>
+                    <tr><td>6. 常温下与空气接触能缓慢氧化，积热不散引起自燃的物品</td><td>漆布及其制品、油布及其制品、油纸及其制品、油绸及其制品</td></tr>
+                </thead>
+            </table>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>7.</strong> 某商场地上一层至五层为商业营业厅，每层建筑面积为4000m<sup>2</sup>，室外设计地面至五层屋面面层的高度为24m。屋面上设置有水箱间、电梯机房、风机机房、观光餐厅等用房，各类功能用房的高度均不超过5m，总建筑面积为900m<sup>2</sup>。该商场的建筑分类为（<span class="blur-text">D</span>）</p>
+        <ul>
+            <li>A. 低层公共建筑</li>
+            <li>B. 多层公共建筑</li>
+            <li>C. 二类高层公共建筑</li>
+            <li>D. 一类高层公共建筑</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <style>
+                blockquote { border-left: 5px solid #ccc; padding: 10px 20px; margin: 20px 0; background-color: #f9f9f9; color: #555; }
+                blockquote cite { display: block; text-align: right; font-style: normal; color: #777; margin-top: 10px; }
+            </style>
+            <p>
+                <h3>计算建筑高度</h3>
+                <h5>第1步：判断建筑属性</h5>
+                &#8755; 商场<br>&#8756; 公共建筑
+                <h5>第2步：判断屋面形式</h5>（选择建筑高度的计算方式）
+                &#8755; 由题目中信息可知<br>&#8756; 平屋面
+                <h5>第3步：判断是否有建筑高度不计入的情形</h5>
+                <blockquote><p>局部突出屋面的瞭望塔、冷却塔、水箱间、微波天线间或设施、电梯机房、排风和排烟机房以及楼梯出口小间等<font color="blur">辅助用房</font>占屋面面积不大于<sup>1</sup>/<sub>4</sub>者，可不计入建筑高度。</p></blockquote>
+                局部突出使用功能：水箱间、电梯机房、风机机房、<strong><font color="blue">观光餐厅</font></strong><br>
+                &#8755; <strong><font color="blue">观光餐厅</font></strong>属于<u>局部突出存在非辅助用房</u><br>&#8756; 要计入建筑高度
+                <h5>第4步：计算建筑高度</h5>
+                H = 建筑室外设计地面至其屋面面层的高度 = 24 + 5 = 29m<br>
+                &#8756; 属于高层公共建筑
+                <h5>第5步：判断是一类还是二类高层公共建筑</h5>
+                <blockquote>
+                    <p>
+                        对于高层的商场建筑，存在以下三种情况时，属于一类高层，否则属于二类高层<br>
+                        ① 建筑高度 &gt; 50m 的非单层建筑<br>
+                        ② 24m 以上有完整楼层且满足建筑面积 &gt; 1000m<sup>2</sup><br>
+                        ③ 属于重要公共建筑（根据《汽车加油加气站设计与施工规范》（GB50156）B.0.1-7 总建筑面积超过20000m<sup>2</sup> 的商店（商场）建筑，商业营业场所的建筑面积超过 15000m<sup>2</sup> 的综合楼属于重要公共建筑。）<br>
+                        本题中，商场总建筑面积 4000 * 5 + 900 = 20900m<sup>2</sup><br>
+                        &#8756; 属于一类高层公共建筑。
+                    </p>
+                </blockquote>
+            </p>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>8.</strong> 某 16 层民用建筑，一至三层为商场，每层建筑面积为 3200m<sup>2</sup>；四至十六层为单元式住宅，每层建筑面积为1200m<sup>2</sup>；建筑首层室内地坪标高为&plusmn;0.0m，室外地坪标高为 -0.3m，商场平面层标高为 +14.6m，住宅平屋面面层标高为 +49.7m，女儿墙顶部标高为 +50.9m。根据《建筑设计防火规范》（GB 50016-2014）规定的建筑分类，该建筑的类别应确定为（<span class="blur-text">A</span>）</p>
+        <ul>
+            <li>A. 二类高层公共建筑</li>
+            <li>B. 一类高层公共建筑</li>
+            <li>C. 一类高层住宅建筑</li>
+            <li>D. 二类高层住宅建筑</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <h3>民用建筑分类</h3>
+            <style>
+                table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+                .center-cell { text-align: center; vertical-align: middle; height: 50px; background-color: lightblue; }
+                blockquote { border-left: 5px solid #ccc; padding: 10px 20px; margin: 20px 0; background-color: #f9f9f9; color: #555; }
+                blockquote cite { display: block; text-align: right; font-style: normal; color: #777; margin-top: 10px; }
+            </style>
+            <table>
+                <thead>
+                    <tr><th rowspan="2">名称</th><th colspan="2">高层民用建筑</th><th rowspan="2">单、多层</th></tr>
+                    <tr><th>一类</th><th>二类</th></tr>
+                    <tr><td>住宅建筑</td><td>H &gt; 54m</td><td>27m &lt; H &le; 54m</td><td>H &le; 27m</td></tr>
+                    <tr>
+                        <td rowspan="2" class="center-cell">公共建筑</td>
+                        <td>H &gt; 50m 非单层</td>
+                        <td rowspan="2">24m &lt; H &le; 50m 非单层，且不属于“四功能”之一</td>
+                        <td rowspan="2"><strong>单层：</strong>仅1层（无论建筑高度多高）<br><br><strong>多层：</strong>H &le; 24m 非单层</td>
+                    </tr>
+                    <tr>
+                        <td><font color=blue>H &gt; 24m 非单层</font>且属于一下“四功能”之一<br>
+                            ① H &gt; 24m 部分，任一楼层建筑面积 &gt; 1000m<sup>2</sup> 的商店、展览、电信、邮政、财贸金融建筑和<font color=blue>其他多种功能组合的建筑</font><br>
+                            <blockquote><p>其他多种功能组合的建筑：<br>指公共建筑中具有两种或两种以上的公共使用功能，<font color=blue>不包括住宅与公共建筑组合建造的情况</font></p></blockquote>
+                            ② 医疗建筑、重要公共建筑、独立建造的老年人照料设施<br>
+                            ③ 省级及以上的广播电视和防灾指挥调度建筑、网局级和省级电力调度<br>
+                            ④ 藏书 &gt; 100万册的图书馆、书库</td>
+                    </tr>
+                </thead>
+            </table>
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>9.</strong> 下列属于一类高层民用建筑的是（<span class="blur-text">A B D</span>）</p>
+        <ul>
+            <li>A. 建筑高度 26m 的病房楼</li>
+            <li>B. 建筑高度 54m 的办公楼</li>
+            <li>C. 建筑高度 32m 的员工宿舍</li>
+            <li>D. 建筑高度 26m 的藏书量达 120万册 的图书馆</li>
+            <li>E. 建筑高度 33m 的住宅</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            &emsp;根据《建筑设计防火规范》（GB50016）（2018年版）表5.1.1 高度大于 24m 的医疗建筑为一类高层公共建筑。（选项 A 属于）<br>
+            &emsp;高度大于 50m 的公共建筑属于一类高层公共建筑。（选项 B 属于）<br>
+            &emsp;高度大于 24m 但不大于 50m 的公共建筑属于二类高层公共建筑。（选项 C 不属于）<br>
+            &emsp;高度大于 24m 且藏书超过 100万册 的图书馆、书库为一类高层公共建筑。（选项 D 属于）<br>
+            &emsp;高度大于 27m 但不大于 54m 的住宅建筑为二类高层住宅建筑。（选项 E 不属于）
+        </details>
+    </div>
+
+    <div class="qa-block">
+        <p><strong>10.</strong> 某建筑高度为 53m 的宾馆，其客房之间隔墙的耐火极限至少应为（<span class="blur-text">C</span>）</p>
+        <ul>
+            <li>A. 1.50</li>
+            <li>B. 0.50</li>
+            <li>C. 0.75</li>
+            <li>D. 1.00</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+            <h4>不同耐火等级民用建筑相应构建的燃烧性能和耐火极限</h4>
+            <style>
+                .my-table { width: 300px; height:200px; border-collapse: collapse; }
+                .my-table td, .my-table th { border: 1px solid black; }
+                .center-cell { text-align: center; vertical-align: middle; background-color: transparent; }
+            </style>
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2" colspan="2" class="center-cell">构建名称</th>
+                        <th colspan="7" class="center-cell">耐火等级</th>
+                    </tr>
+                    <tr><th>一级</th><th colspan="4" class="center-cell">二级</th><th>三级</th><th>四级</th></tr>
+                    <tr>
+                        <td rowspan="7">墙</td>
+                        <td>防火墙</td><td>3.00 A</td><td colspan="4" class="center-cell">3.00 A</td><td>3.00 A</td><td>3.00 A</td>
+                    </tr>
+                    <tr><td>承重墙</td><td>3.00 A</td><td colspan="4" class="center-cell">2.50 A</td><td>2.00 A</td><td>0.50 B1</td></tr>
+                    <tr><td>非承重外墙</td><td>1.00 A</td><td colspan="4" class="center-cell">1.50 A</td><td>0.50 A</td><td>B2</td></tr>
+                    <tr><td>楼梯间和前室的墙，电梯井的墙；<br>住宅建筑单元之间的墙和分户墙</td><td>2.00 A</td><td colspan="4" class="center-cell">2.50 A</td><td>1.50 A</td><td>0.50 B1</td></tr>
+                    <tr><td>疏散走道两侧的隔墙</td><td>1.00 A</td><td colspan="4" class="center-cell">1.00 A</td><td>0.50 A</td><td>0.25 B1</td></tr>
+                    <tr>
+                        <td rowspan="2">房间隔墙</td>
+                        <td rowspan="2">0.75 A</td><td rowspan="2">0.50 A</td><td rowspan="2">0.75 B1</td><td rowspan="2">S &le; 100m<sup>2</sup><br>(房间建面)</td>
+                        <td>0.50 B1</td><td rowspan="2">0.50 B1</td><td rowspan="2">0.25 B1</td>
+                    </tr>
+                    <tr><td>0.3 A</td></tr>
+                    <tr><td colspan="2" class="center-cell">柱</td><td>3.00 A</td><td colspan="4" class="center-cell">2.50 A</td><td>2.00 A</td><td>0.50 B1</td></tr>
+                    <tr><td colspan="2" class="center-cell">梁</td><td>2.00 A</td><td colspan="4" class="center-cell">1.50 A</td><td>1.00 A</td><td>0.50 B1</td></tr>
+                </thead>
+            </table>
+        </details>
+    </div>
+
+    <script>
+    /* * document: 文档。代表整个HTML页面。
+     * addEventListener: 添加事件监听器。这是一个函数，用于告诉浏览器监听某个特定事件（比如'DOMContentLoaded'或'click'），
+     * 并在事件发生时执行指定的函数。
+     * 'DOMContentLoaded': 这是一个事件名称，当初始的 HTML 文档被完全加载和解析完成之后，浏览器就会触发这个事件。
+     * 把我们的代码放在这里面，可以确保在尝试操作页面元素（如题目、选项）时，这些元素已经存在于页面上了。
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // 找到页面上所有 class="qa-block" 的元素，即所有题目区块。
+        const allQuestionBlocks = document.querySelectorAll('.qa-block');
+
+        // forEach 是一个遍历方法，它会对上面找到的每一个题目区块执行我们提供的函数。
+        allQuestionBlocks.forEach(block => {
+            
+            // 在当前题目区块内，找到显示答案的那个 <span> 元素。
+            // querySelector: 查询选择器。用于查找匹配指定CSS选择器的第一个元素。
+            const answerSpan = block.querySelector('.blur-text');
+            // 在当前题目区块内，找到所有的选项 <li> 元素。
+            const options = block.querySelectorAll('ul li');
+
+            // 如果这个区块里没有答案或者没有选项，就跳过，避免出错。
+            if (!answerSpan || options.length === 0) {
+                return;
+            }
+
+            /*
+             * textContent: 文本内容。获取一个元素内部的所有文本。
+             * trim(): 来自英文单词 trim，中文释义为“修剪”。用于移除字符串两端的空白字符。
+             * split(' '): 分割。根据指定的字符（这里是空格）将一个字符串分割成一个字符串数组。
+             * 例如 "C D E".split(' ') 会得到一个数组 ['C', 'D', 'E']，这样就同时支持了单选和多选题。
+             */
+            const correctAnswers = answerSpan.textContent.trim().split(' ');
+            
+            // 标记这道题是否已经回答正确（主要用于单选题）
+            let isAnswered = false;
+
+            // 遍历这道题的所有选项
+            options.forEach(option => {
+                // 为每一个选项添加'click'（点击）事件的监听。
+                option.addEventListener('click', () => {
+                    // 如果这道题已经回答正确了（针对单选题），就不再执行任何操作。
+                    if (isAnswered) {
+                        return;
+                    }
+
+                    // 提取选项的标识字母，例如 "A. 松香" -> "A"
+                    // substring(0, 1): 提取子字符串。从索引0开始，到索引1结束（不包含1），即提取第一个字符。
+                    const selectedChoice = option.textContent.trim().substring(0, 1);
+                    
+                    /*
+                     * includes(): 包含。这是一个数组方法，用于判断一个数组是否包含一个指定的值。
+                     * 如果 correctAnswers 数组中包含了用户点击的选项，则返回 true。
+                     */
+                    if (correctAnswers.includes(selectedChoice)) {
+                        // --- 选择正确 ---
+                        
+                        // classList: 元素的类名列表。
+                        // add(): 添加。向元素的类名列表中添加一个新的类。
+                        option.classList.add('correct');
+                        answerSpan.classList.add('revealed');
+                        
+                        // 如果是单选题 (答案只有一个)，则将 isAnswered 标记为 true，防止重复或修改答案
+                        if (correctAnswers.length === 1) {
+                            isAnswered = true;
+                        }
+
+                    } else {
+                        // --- 选择错误 ---
+                        option.classList.add('incorrect', 'shake');
+
+                        /*
+                         * setTimeout: 设置延时。这是一个函数，可以在指定的毫秒数后执行一个函数或一段代码。
+                         * 这里我们用它在 1000 毫秒（1秒）后，移除红色背景和抖动效果的类。
+                         * - set: 来自英文单词 set，中文释义为“设置”。
+                         * - Timeout: 来自英文单词 timeout，中文释义为“超时、暂停”。
+                         */
+                        setTimeout(() => {
+                            // remove(): 移除。从元素的类名列表中移除指定的类。
+                            option.classList.remove('incorrect', 'shake');
+                        }, 1000);
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>
