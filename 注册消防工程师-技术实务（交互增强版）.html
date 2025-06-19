@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册消防工程师-技术实务 (交互增强版)</title>
+    <title>注册消防工程师-技术实务</title>
     <style>
         /* --- 全局样式优化 --- */
         body {
-            /*
-             * font-family: 字体族。用于指定元素的字体。
-             * - "PingFang SC", "Microsoft YaHei": 优先使用苹果和Windows系统下美观的中文字体。
-             * - sans-serif: 无衬线字体系。如果前面的字体都不可用，则使用浏览器默认的无衬线字体。
-             */
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-            background: #F0F2F5; /* 使用一个更柔和、现代的浅灰色背景 */
-            color: #333; /* 设置基础文字颜色为深灰色，提高可读性 */
+            background: #F0F2F5; 
+            color: #333; 
             padding: 20px;
         }
         
@@ -22,188 +17,129 @@
         .page-title {
             width: 90%;
             max-width: 900px;
-            margin: 0 auto 40px auto; /* 上0 左右自动 下40 */
-            text-align: center; /* 文本居中 */
-            color: #2c3e50; /* 标题颜色 */
-            border-bottom: 3px solid #5C7DA8; /* 标题下划线，增加设计感 */
-            padding-bottom: 15px; /* 内边距-底部 */
+            margin: 0 auto 40px auto; 
+            text-align: center; 
+            color: #2c3e50; 
+            border-bottom: 3px solid #5C7DA8; 
+            padding-bottom: 15px; 
         }
+
+        .fraction {
+            display: inline-flex; flex-direction: column; justify-content: center; 
+            position: relative; vertical-align: middle; font-size: 0.8em; text-align: center;
+        }
+        .fraction > sup { line-height: 1; display: block; border-bottom: 1px solid #000; padding-bottom: 2px; }
+        .fraction > sub { line-height: 1; display: block; padding-top: 2px; }
+        .fraction > span { display: none; }
         
+        /* --- 新增：响应式图片样式 --- */
+        .responsive-image {
+            max-width: 100%; height: auto; display: block; margin: 15px auto;
+        }
+
         /* --- 题目区块样式优化 --- */
         .qa-block {
-            max-width: 900px;
-            margin: 20px auto; /* 左右自动居中，上下间距20px */
-            padding: 25px 30px; /* 增加内部空间 */
-            border: 1px solid #e0e0e0;
-            border-radius: 12px; /* 更大的圆角 */
+            max-width: 900px; margin: 20px auto; padding: 25px 30px; 
+            border: 1px solid #e0e0e0; border-radius: 12px; 
             background-color: #ffffff;
-            /*
-             * box-shadow: 盒子阴影。为元素添加阴影。
-             * 0 5px 20px -5px rgba(0,0,0,0.1): 水平偏移0, 垂直偏移5px, 模糊半径20px, 扩散半径-5px, 颜色为10%不透明度的黑色。
-             */
             box-shadow: 0 5px 20px -5px rgba(0,0,0,0.1);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-
-        .qa-block:hover {
-             /*
-             * transform: 变形。用于对元素进行移动、缩放、旋转或倾斜。
-             * translateY(-3px): 沿Y轴向上移动3个像素。
-             */
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px -5px rgba(0,0,0,0.15);
-        }
-
-        .qa-block p {
-            font-size: 19px; /* 略微增大问题字号 */
-            line-height: 1.7; /* 增大行高 */
-        }
-
-        .qa-block p strong {
-             /* 优化题目序号的样式 */
-            color: #5C7DA8; /* 设置为主题色 */
-            font-size: 20px;
-            margin-right: 5px;
-        }
+        .qa-block:hover { transform: translateY(-3px); box-shadow: 0 8px 25px -5px rgba(0,0,0,0.15); }
+        .qa-block p { font-size: 19px; line-height: 1.7; }
+        .qa-block p strong { color: #5C7DA8; font-size: 20px; margin-right: 5px; }
 
         /* --- 答案交互样式优化 --- */
-        .blur-text {
-            filter: blur(5px); /* 降低模糊度，更易于定位点击 */
-            cursor: pointer;
-            transition: filter 0.3s ease-out;
-            background-color: #f0f0f0;
-            padding: 0 5px;
-            border-radius: 4px;
-        }
-        /* 答案被揭示后的样式 */
-        .blur-text.revealed {
-            filter: none;
-            background-color: transparent;
-            color: #D9534F; /* 红色，醒目 */
-            font-weight: bold;
-            padding: 0;
-        }
+        .blur-text { filter: blur(5px); cursor: pointer; transition: filter 0.3s ease-out; background-color: #f0f0f0; padding: 0 5px; border-radius: 4px; }
+        .blur-text.revealed { filter: none; background-color: transparent; color: #0033ff; font-weight: bold; padding: 0; }
 
         /* --- 选项列表样式优化 --- */
-        .qa-block ul {
-            list-style-type: none;
-            padding-left: 20px;
-            margin-top: 15px;
-        }
-        .qa-block li {
-            margin-bottom: 8px;
-            font-size: 18px;
-            line-height: 1.6;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            cursor: pointer; /* 鼠标悬停时显示为手型 */
-        }
+        .qa-block ul { list-style-type: none; padding-left: 20px; margin-top: 15px; }
+        .qa-block li { margin-bottom: 8px; font-size: 18px; line-height: 1.6; padding: 8px 12px; border-radius: 6px; transition: background-color 0.2s ease, color 0.2s ease; cursor: pointer; }
+        .qa-block li:hover { background-color: #e9ecef; }
 
-        .qa-block li:hover {
-            background-color: #e9ecef; /* 鼠标悬停时增加背景色 */
-        }
-
-        /* --- 新增：答题反馈样式 --- */
-        /* 正确答案样式 */
-        .qa-block li.correct {
-            background-color: #28a745 !important; /* 绿色背景 */
-            color: white;
-            font-weight: bold;
-        }
-
-        /* 错误答案样式 (瞬时) */
-        .qa-block li.incorrect {
-            background-color: #dc3545 !important; /* 红色背景 */
-            color: white;
-        }
-        
-        /* 新增：抖动动画 */
-        .qa-block li.shake {
-            /* * animation: 动画。用于将动画效果应用到元素上。
-             * - shake: 动画名称，对应 @keyframes shake。
-             * - 0.5s: 动画持续时间为0.5秒。
-             * - ease-in-out: 动画速度曲线，慢-快-慢。
-             */
-            animation: shake 0.5s ease-in-out;
-        }
-
-        /* * @keyframes: 关键帧。用于定义CSS动画的中间步骤。
-         * 英文 keyframes 意为“关键帧”，是动画制作中的术语。
-         */
+        /* --- 答题反馈样式 --- */
+        .qa-block li.correct { background-color: #28a745 !important; color: white; font-weight: bold; }
+        .qa-block li.incorrect { background-color: #dc3545 !important; color: white; }
+        .qa-block li.shake { animation: shake 0.5s ease-in-out; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
             20%, 40%, 60%, 80% { transform: translateX(8px); }
         }
 
+        /* --- “相关知识”区域样式 --- */
+        .qa-block details { margin-top: 20px; }
+        .qa-block summary { cursor: pointer; font-weight: bold; font-size: 18px; color: #5C7DA8; padding: 10px; border-radius: 6px; background-color: #f8f9fa; border: 1px solid #e0e0e0; transition: background-color 0.2s ease; }
+        .qa-block summary:hover { background-color: #e9ecef; }
+        .highlight { color: #007BFF; font-weight: bold; }
 
-        /* --- “相关知识”区域样式优化 --- */
-        .qa-block details {
-            margin-top: 20px;
-        }
-
-        .qa-block summary {
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 18px;
-            color: #5C7DA8; /* 主题色 */
-            padding: 10px;
-            border-radius: 6px;
-            background-color: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            transition: background-color 0.2s ease;
-        }
-
-        .qa-block summary:hover {
-            background-color: #e9ecef;
-        }
-
-        /* 定义一个高亮文本的通用类，替代<font>标签 */
-        .highlight {
-            color: #007BFF; /* 使用蓝色高亮 */
-            font-weight: bold;
-        }
-
-        /* --- 统一的表格样式 (重点优化) --- */
-        .knowledge-table {
-            /*
-             * border-collapse: 边框合并。设置表格的边框是否被合并为一个单一的边框。
-             * - collapse: 来自英文单词 collapse，中文释义为“折叠、合并”。
+        /* --- 统一的表格样式 --- */
+        .knowledge-table { border-collapse: collapse; width: 100%; margin-top: 15px; font-size: 16px; }
+        .knowledge-table th, .knowledge-table td { border-bottom: 1px solid #dee2e6; padding: 12px 15px; text-align: left; }
+        .knowledge-table thead th { background-color: #f8f9fa; font-weight: bold; color: #495057; border-bottom-width: 2px; }
+        .knowledge-table tbody tr:nth-child(even) { background-color: #f8f9fa; }
+        .knowledge-table td:first-child, .knowledge-table th:first-child { font-weight: bold; }
+        
+        /* --- 新增：分页控制样式 --- */
+        #pagination-controls {
+            /* * display: 显示方式。
+             * 默认设为 none (不显示)，这样在电脑端默认是看不见分页控件的。
+             * - display: 来自英文单词 display，中文释义为“显示”。
+             * - none: 来自英文单词 none，中文释义为“无”。
              */
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 15px;
+            display: none;
+            justify-content: center; /* flex布局：子元素水平居中 */
+            align-items: center;    /* flex布局：子元素垂直居中 */
+            margin: 40px auto;
+            max-width: 900px;
+        }
+        #pagination-controls button {
+            padding: 10px 20px;
             font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #5C7DA8;
+            background-color: #5C7DA8;
+            color: white;
+            border-radius: 5px;
+            margin: 0 15px;
+            transition: background-color 0.2s;
         }
-
-        .knowledge-table th, .knowledge-table td {
-            border-bottom: 1px solid #dee2e6; /* 只保留底部边框，更简洁 */
-            padding: 12px 15px; /* 增加单元格内边距 */
-            text-align: left; /* 文本左对齐 */
+        #pagination-controls button:hover:not(:disabled) {
+            background-color: #4a678f;
         }
-
-        .knowledge-table thead th {
-            background-color: #f8f9fa; /* 表头背景色 */
+        /* 当按钮被禁用时的样式 */
+        #pagination-controls button:disabled {
+            background-color: #ccc;
+            border-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #page-indicator {
+            font-size: 18px;
             font-weight: bold;
-            color: #495057;
-            border-bottom-width: 2px; /* 加粗表头下边框 */
+            color: #333;
         }
 
-        /*
-         * :nth-child(even): 伪类选择器。选择属于其父元素的偶数子元素。
-         * - nth: "第n个" 的缩写。
-         * - child: 来自英文单词 child，中文释义为“孩子”。
-         * - even: 来自英文单词 even，中文释义为“偶数”。
-         * 这里用于创建“斑马纹”或“条纹”表格，提高可读性。
+        /* --- 新增：核心响应式媒体查询 --- */
+        /* * @media: 媒体查询。CSS3中的一个强大功能，它允许我们根据设备的特性（如视口宽度、高度、方向等）来应用不同的样式。
+         * - media: 来自英文单词 media，中文释义为“媒体”。
+         * (max-width: 768px): 这是一个查询条件，意思是“当屏幕或视口的最大宽度为768像素或更小时”。
+         * 768px 是一个常用的断点，通常用来区分平板电脑/手机和桌面电脑。
          */
-        .knowledge-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .knowledge-table td:first-child,
-        .knowledge-table th:first-child {
-            font-weight: bold; /* 第一列内容加粗，突出类别 */
+        @media (max-width: 768px) {
+            /* 在手机端 (宽度<=768px)，默认隐藏所有题目区块 */
+            .qa-block {
+                display: none;
+            }
+            /* 仅显示被JS标记为当前页的题目 */
+            .qa-block.active-page {
+                display: block;
+            }
+            /* 在手机端，显示分页控件 */
+            #pagination-controls {
+                display: flex; /* 使用 flex 布局来美化按钮和页码的排列 */
+            }
         }
         
     </style>
@@ -211,7 +147,7 @@
 <body>
     
     <div class="page-title">
-        <h1><strong>注册消防工程师-技术实务&nbsp;交互练习题</strong></h1>
+        <h1><strong>注册消防工程师-技术实务&nbsp;练习题</strong></h1>
     </div>
 
     <div class="qa-block">
@@ -226,43 +162,14 @@
             <summary><i>相关知识</i></summary>
             <h3>按照燃烧对象的性质分类：</h3>
             <table class="knowledge-table">
-                <thead>
-                    <tr>
-                        <th colspan="2">类别</th>
-                        <th>举例</th>
-                    </tr>
-                </thead>
+                <thead><tr><th colspan="2">类别</th><th>举例</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td>A类火灾</td>
-                        <td>固体物质火灾</td>
-                        <td>木材、棉、毛、麻、纸张</td>
-                    </tr>
-                    <tr>
-                        <td>B类火灾</td>
-                        <td>液体或可融化固体物质火灾</td>
-                        <td>汽油、煤油、原油、甲醇、乙醇、<span class="highlight">沥青</span>、石蜡</td>
-                    </tr>
-                    <tr>
-                        <td>C类火灾</td>
-                        <td>气体火灾</td>
-                        <td>煤气、天然气、甲烷、乙烷、氢气、乙炔</td>
-                    </tr>
-                    <tr>
-                        <td>D类火灾</td>
-                        <td>金属火灾</td>
-                        <td>钾、钠、镁、钛、锆、锂</td>
-                    </tr>
-                    <tr>
-                        <td>E类火灾</td>
-                        <td>带电火灾</td>
-                        <td>变压器等设备的电气火灾</td>
-                    </tr>
-                    <tr>
-                        <td>F类火灾</td>
-                        <td>烹饪器具内的烹饪物火灾</td>
-                        <td>动物油脂或植物油脂火灾</td>
-                    </tr>
+                    <tr><td>A类火灾</td><td>固体物质火灾</td><td>木材、棉、毛、麻、纸张</td></tr>
+                    <tr><td>B类火灾</td><td>液体或可融化固体物质火灾</td><td>汽油、煤油、原油、甲醇、乙醇、<span class="highlight">沥青</span>、石蜡</td></tr>
+                    <tr><td>C类火灾</td><td>气体火灾</td><td>煤气、天然气、甲烷、乙烷、氢气、乙炔</td></tr>
+                    <tr><td>D类火灾</td><td>金属火灾</td><td>钾、钠、镁、钛、锆、锂</td></tr>
+                    <tr><td>E类火灾</td><td>带电火灾</td><td>变压器等设备的电气火灾</td></tr>
+                    <tr><td>F类火灾</td><td>烹饪器具内的烹饪物火灾</td><td>动物油脂或植物油脂火灾</td></tr>
                 </tbody>
             </table>
         </details>
@@ -279,39 +186,12 @@
         <details>
             <summary><i>相关知识</i></summary>
             <table class="knowledge-table">
-                <thead>
-                    <tr>
-                        <th>类别</th>
-                        <th>死亡人数(P/人)</th>
-                        <th>重伤人数(N/人)</th>
-                        <th>直接经济损失(M/元)</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>类别</th><th>死亡人数(P/人)</th><th>重伤人数(N/人)</th><th>直接经济损失(M/元)</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td>特别重大火灾</td>
-                        <td>P&ge;30</td>
-                        <td>N&ge;100</td>
-                        <td>M&ge;1亿</td>
-                    </tr>
-                    <tr>
-                        <td><span class="highlight">重大火灾</span></td>
-                        <td>10&le;P<30</td>
-                        <td>50&le;P<100</td>
-                        <td><span class="highlight">5000万&le;M<1亿</span></td>
-                    </tr>
-                    <tr>
-                        <td>较大火灾</td>
-                        <td>3&le;P<10</td>
-                        <td><span class="highlight">10&le;N<50</span></td>
-                        <td>1000万&le;M<5000万</td>
-                    </tr>
-                    <tr>
-                        <td>一般火灾</td>
-                        <td><span class="highlight">P<3</span></td>
-                        <td>N<10</td>
-                        <td>M<1000万</td>
-                    </tr>
+                    <tr><td>特别重大火灾</td><td>P&ge;30</td><td>N&ge;100</td><td>M&ge;1亿</td></tr>
+                    <tr><td><span class="highlight">重大火灾</span></td><td>10&le;P<30</td><td>50&le;P<100</td><td><span class="highlight">5000万&le;M<1亿</span></td></tr>
+                    <tr><td>较大火灾</td><td>3&le;P<10</td><td><span class="highlight">10&le;N<50</span></td><td>1000万&le;M<5000万</td></tr>
+                    <tr><td>一般火灾</td><td><span class="highlight">P<3</span></td><td>N<10</td><td>M<1000万</td></tr>
                 </tbody>
             </table>
         </details>
@@ -327,12 +207,7 @@
         </ul>
         <details>
             <summary><i>相关知识</i></summary>
-            <p>
-                按物质产生爆炸的原因和性质不同，通常将爆炸分为<span class="highlight">物理爆炸</span>、<span class="highlight">化学爆炸</span>和<span class="highlight">核爆炸</span>三种。<br><br>
-                <strong>物理爆炸：</strong>物质因状态变化导致压力发生突变而形成的爆炸叫做物理爆炸。其特点是<span class="highlight">爆炸前后物质的化学成分均不改变。</span><br><br>
-                <strong>化学爆炸：</strong>是指由于物质急剧氧化或分解产生温度、压力增加或两者同时增加而形成的爆炸现象。化学<span class="highlight">爆炸前后，物质的化学成分和性质均发生了根本的变化。</span><br><br>
-                <strong>核爆炸：</strong>由原子核裂变或聚变反应释放出核能所形成的爆炸，成为核爆炸。例如原子弹、氢弹、中子弹的爆炸都属于核爆炸。
-            </p>
+            <p>按物质产生爆炸的原因和性质不同，通常将爆炸分为<span class="highlight">物理爆炸</span>、<span class="highlight">化学爆炸</span>和<span class="highlight">核爆炸</span>三种。<br><br><strong>物理爆炸：</strong>物质因状态变化导致压力发生突变而形成的爆炸叫做物理爆炸。其特点是<span class="highlight">爆炸前后物质的化学成分均不改变。</span><br><br><strong>化学爆炸：</strong>是指由于物质急剧氧化或分解产生温度、压力增加或两者同时增加而形成的爆炸现象。化学<span class="highlight">爆炸前后，物质的化学成分和性质均发生了根本的变化。</span><br><br><strong>核爆炸：</strong>由原子核裂变或聚变反应释放出核能所形成的爆炸，成为核爆炸。例如原子弹、氢弹、中子弹的爆炸都属于核爆炸。</p>
         </details>
     </div>
 
@@ -348,38 +223,14 @@
         <details>
             <summary><i>相关知识</i></summary>
             <table>
-                <thead>
-                    <tr>
-                        <th>物品</th>
-                        <th>生产火灾危险性</th>
-                        <th>存储火灾危险性</th>
-                    </tr>
-                    <tr>
-                        <td>铝粉</td>
-                        <td>乙类</td>
-                        <td>乙类</td>
-                    </tr>
-                    <tr>
-                        <td>竹藤家具</td>
-                        <td>丙类</td>
-                        <td>丙类</td>
-                    </tr>
-                    <tr>
-                        <td>漆布</td>
-                        <td>丙类</td>
-                        <td>乙类</td>
-                    </tr>
-                    <tr>
-                        <td>桐油织布</td>
-                        <td>丙类</td>
-                        <td>乙类</td>
-                    </tr>
-                    <tr>
-                        <td>谷物面粉</td>
-                        <td>乙类</td>
-                        <td>丙类</td>
-                    </tr>
-                </thead>
+                <thead><tr><th>物品</th><th>生产火灾危险性</th><th>存储火灾危险性</th></tr></thead>
+                <tbody>
+                    <tr><td>铝粉</td><td>乙类</td><td>乙类</td></tr>
+                    <tr><td>竹藤家具</td><td>丙类</td><td>丙类</td></tr>
+                    <tr><td>漆布</td><td>丙类</td><td>乙类</td></tr>
+                    <tr><td>桐油织布</td><td>丙类</td><td>乙类</td></tr>
+                    <tr><td>谷物面粉</td><td>乙类</td><td>丙类</td></tr>
+                </tbody>
             </table>
         </details>
     </div>
@@ -394,19 +245,9 @@
         </ul>
         <details>
             <summary><i>相关知识</i></summary>
-            <p>
-                <h3>同一座仓库或仓库的任一防火分区内，存储有不同火灾危险的物品时，如何确定其火灾危险性❔</h3>
-            </p>
-            <p>
-                <strong>一般规定：</strong>按火灾危险性最大的物品确定<br>
-                <strong>特殊规定：</strong><font color=blue>丁、戊类</font>储存物品仓库的火灾危险性，当&nbsp;<sup>可燃包装重量</sup>/<sub>物品本身重量</sub> <font color=blue>&gt; <sup>1</sup>/<sub>4</sub></font> ，或&nbsp;<sup>可燃包装体积</sup>/<sub>物品本身体积</sub> <font color=blue>&gt; <sup>1</sup>/<sub>2</sub></font> ，应按<font color=blue>丙类</font>确定。
-            </p>
-            <p>
-                陶瓷 == 戊<br>
-                玻璃 == 戊<br>
-                塑料 == 丙<br>
-                自行车 == 丙
-            </p>
+            <p><h3>同一座仓库或仓库的任一防火分区内，存储有不同火灾危险的物品时，如何确定其火灾危险性❔</h3></p>
+            <p><strong>一般规定：</strong>按火灾危险性最大的物品确定<br><strong>特殊规定：</strong><font color=blue>丁、戊类</font>储存物品仓库的火灾危险性，当&nbsp;<span class="fraction"><sup>可燃包装重量</sup><span>/</span><sub>物品本身重量</sub></span> <font color=blue>&gt; <span class="fraction"><sup>1</sup><span>/</span><sub>4</sub></span></font> ，或&nbsp;<span class="fraction"><sup>可燃包装体积</sup><span>/</span><sub>物品本身体积</sub></span> <font color=blue>&gt; <span class="fraction"><sup>1</sup><span>/</span><sub>2</sub></span></font> ，应按<font color=blue>丙类</font>确定。</p>
+            <p>陶瓷 == 戊<br>玻璃 == 戊<br>塑料 == 丙<br>自行车 == 丙</p>
         </details>
     </div>
 
@@ -421,21 +262,11 @@
         <details>
             <summary><i>相关知识</i></summary>
             <style>
-                table, th, td {
-                    border: 1px solid black;
-                    border-collapse: collapse;
-                    padding: 8px;
-                }
-                .center-cell {
-                    text-align: center;		/* 水平居中 */
-                    vertical-align: middle;		/* 垂直居中 */
-                    height: 50px;	/* 确保有足够的高度以看到垂直居中效果 */
-                    background-color: lightblue; 	/* 方便识别 */
-                }
+                table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+                .center-cell { text-align: center; vertical-align: middle; height: 50px; background-color: lightblue; }
             </style>
             <table>
-                <thead>
-                    <tr><th rowspan="7" calss="center-cell">甲</th></tr>
+                <thead><tr><th rowspan="7" calss="center-cell">甲</th></tr>
                     <tr><td>1. 闪点 &lt; 28&deg;C 的液体</td><td>乙烷、戊烷、石脑油、环戊烷、二硫化碳、苯、甲苯、甲醇、乙醇、乙醚、甲酸甲酯、醋酸甲酯、硝酸乙酯、汽油、丙酮、丙烯、酒精度为38&deg;C以上的白酒</td></tr>
                     <tr><td>2. ①爆炸下限 &lt; 10% 的气体<br>&emsp;②受到水或空气中水蒸气的作用能产生爆炸下限 &lt; 10% 气体的固体物质</td><td>乙炔、氢、甲烷、乙烯、丙烯、丁二烯、环氧乙烷、水煤气、硫化氢、氯乙烯、液化石油气、碳化钙、碳化铝</td></tr>
                     <tr><td>3. 常温下能自行分解或在空气中氧化能导致迅速自燃或爆炸的物质</td><td>硝化棉、硝化纤维胶片、喷漆棉、火胶棉、赛璐珞棉、黄磷</td></tr>
@@ -445,9 +276,8 @@
                 </thead>
             </table>
             <table>
-                <thead>
-                    <tr><th rowspan="7" class="center-cell">乙</th></tr>
-                    <tr><td>1. 液体：28&deg;C &le; 闪点 &lt;60&deg;C</td><td>煤油、松节油、丁烯醇、异戊醇、丁醍、醋酸丁酯、硝酸戊酯、乙酰丙酮、环己胺、溶剂油、冰醋酸、樟脑油、甲酸</td></tr>
+                <thead><tr><th rowspan="7" class="center-cell">乙</th></tr>
+                    <tr><td>1. 液体：28&deg;C &le; 闪点 &lt;60&circ;C</td><td>煤油、松节油、丁烯醇、异戊醇、丁醍、醋酸丁酯、硝酸戊酯、乙酰丙酮、环己胺、溶剂油、冰醋酸、樟脑油、甲酸</td></tr>
                     <tr><td>2. 气体：爆炸下限 &ge; 10%</td><td>氨气、一氧化碳</td></tr>
                     <tr><td>3. 不属于甲类的氧化剂</td><td>硝酸铜、铬酸、亚硝酸钾、重铬酸钠、铬酸钠、硝酸、硝酸汞、硝酸钴、发烟硫酸、漂白粉</td></tr>
                     <tr><td>4. 不属于甲类的易燃固体</td><td>硫磺、镁粉、铝粉、赛璐珞板（片）、樟脑、萘、生松香、硝化纤维漆布、硝化纤维色片</td></tr>
@@ -468,34 +298,26 @@
         </ul>
         <details>
             <summary><i>相关知识</i></summary>
+            <img class="responsive-image" src="https://img.venloran.site/file/AgACAgUAAx0Ef0beOQACAShoUkluY2LbGBAfS2plgHiVdFTtmQACh8cxGwp4kVYWtJmGNT863AEAAwIAA3gAAzYE.png" alt="图示" >
             <style>
                 blockquote { border-left: 5px solid #ccc; padding: 10px 20px; margin: 20px 0; background-color: #f9f9f9; color: #555; }
                 blockquote cite { display: block; text-align: right; font-style: normal; color: #777; margin-top: 10px; }
             </style>
-            <p>
-                <h3>计算建筑高度</h3>
-                <h5>第1步：判断建筑属性</h5>
-                &#8755; 商场<br>&#8756; 公共建筑
-                <h5>第2步：判断屋面形式</h5>（选择建筑高度的计算方式）
-                &#8755; 由题目中信息可知<br>&#8756; 平屋面
-                <h5>第3步：判断是否有建筑高度不计入的情形</h5>
-                <blockquote><p>局部突出屋面的瞭望塔、冷却塔、水箱间、微波天线间或设施、电梯机房、排风和排烟机房以及楼梯出口小间等<font color="blur">辅助用房</font>占屋面面积不大于<sup>1</sup>/<sub>4</sub>者，可不计入建筑高度。</p></blockquote>
+            <p><h3>计算建筑高度</h3>
+                <h4>第1步：判断建筑属性</h4>∵ 商场<br>&#8756; 公共建筑
+                <h4>第2步：判断屋面形式</h4>（选择建筑高度的计算方式）由题目中信息可知该建筑为平屋面
+                <h4>第3步：判断是否有建筑高度不计入的情形</h4>
+                    <blockquote><p>局部突出屋面的瞭望塔、冷却塔、水箱间、微波天线间或设施、电梯机房、排风和排烟机房以及楼梯出口小间等<font color="blur">辅助用房</font>占屋面面积不大于&nbsp;<span class="fraction"><sup>1</sup><span>/</span><sub>4</sub></span>&nbsp;者，可不计入建筑高度。</p></blockquote>
                 局部突出使用功能：水箱间、电梯机房、风机机房、<strong><font color="blue">观光餐厅</font></strong><br>
-                &#8755; <strong><font color="blue">观光餐厅</font></strong>属于<u>局部突出存在非辅助用房</u><br>&#8756; 要计入建筑高度
-                <h5>第4步：计算建筑高度</h5>
-                H = 建筑室外设计地面至其屋面面层的高度 = 24 + 5 = 29m<br>
-                &#8756; 属于高层公共建筑
-                <h5>第5步：判断是一类还是二类高层公共建筑</h5>
-                <blockquote>
-                    <p>
-                        对于高层的商场建筑，存在以下三种情况时，属于一类高层，否则属于二类高层<br>
+                ∵ <strong><font color="blue">观光餐厅</font></strong>属于<u>局部突出存在非辅助用房</u><br>&#8756; 要计入建筑高度
+                <h4>第4步：计算建筑高度</h4>H = 建筑室外设计地面至其屋面面层的高度 = 24 + 5 = 29m<br>&#8756; 属于高层公共建筑
+                <h4>第5步：判断是一类还是二类高层公共建筑</h4>
+                <blockquote><p>对于高层的商场建筑，存在以下三种情况时，属于一类高层，否则属于二类高层<br>
                         ① 建筑高度 &gt; 50m 的非单层建筑<br>
                         ② 24m 以上有完整楼层且满足建筑面积 &gt; 1000m<sup>2</sup><br>
                         ③ 属于重要公共建筑（根据《汽车加油加气站设计与施工规范》（GB50156）B.0.1-7 总建筑面积超过20000m<sup>2</sup> 的商店（商场）建筑，商业营业场所的建筑面积超过 15000m<sup>2</sup> 的综合楼属于重要公共建筑。）<br>
                         本题中，商场总建筑面积 4000 * 5 + 900 = 20900m<sup>2</sup><br>
-                        &#8756; 属于一类高层公共建筑。
-                    </p>
-                </blockquote>
+                        &#8756; 属于一类高层公共建筑。</p></blockquote>
             </p>
         </details>
     </div>
@@ -578,22 +400,14 @@
             </style>
             <table>
                 <thead>
-                    <tr>
-                        <th rowspan="2" colspan="2" class="center-cell">构建名称</th>
-                        <th colspan="7" class="center-cell">耐火等级</th>
-                    </tr>
+                    <tr><th rowspan="2" colspan="2" class="center-cell">构建名称</th><th colspan="7" class="center-cell">耐火等级</th></tr>
                     <tr><th>一级</th><th colspan="4" class="center-cell">二级</th><th>三级</th><th>四级</th></tr>
-                    <tr>
-                        <td rowspan="7">墙</td>
-                        <td>防火墙</td><td>3.00 A</td><td colspan="4" class="center-cell">3.00 A</td><td>3.00 A</td><td>3.00 A</td>
-                    </tr>
+                    <tr><td rowspan="7">墙</td><td>防火墙</td><td>3.00 A</td><td colspan="4" class="center-cell">3.00 A</td><td>3.00 A</td><td>3.00 A</td></tr>
                     <tr><td>承重墙</td><td>3.00 A</td><td colspan="4" class="center-cell">2.50 A</td><td>2.00 A</td><td>0.50 B1</td></tr>
                     <tr><td>非承重外墙</td><td>1.00 A</td><td colspan="4" class="center-cell">1.50 A</td><td>0.50 A</td><td>B2</td></tr>
                     <tr><td>楼梯间和前室的墙，电梯井的墙；<br>住宅建筑单元之间的墙和分户墙</td><td>2.00 A</td><td colspan="4" class="center-cell">2.50 A</td><td>1.50 A</td><td>0.50 B1</td></tr>
                     <tr><td>疏散走道两侧的隔墙</td><td>1.00 A</td><td colspan="4" class="center-cell">1.00 A</td><td>0.50 A</td><td>0.25 B1</td></tr>
-                    <tr>
-                        <td rowspan="2">房间隔墙</td>
-                        <td rowspan="2">0.75 A</td><td rowspan="2">0.50 A</td><td rowspan="2">0.75 B1</td><td rowspan="2">S &le; 100m<sup>2</sup><br>(房间建面)</td>
+                    <tr><td rowspan="2">房间隔墙</td><td rowspan="2">0.75 A</td><td rowspan="2">0.50 A</td><td rowspan="2">0.75 B1</td><td rowspan="2">S &le; 100m<sup>2</sup><br>(房间建面)</td>
                         <td>0.50 B1</td><td rowspan="2">0.50 B1</td><td rowspan="2">0.25 B1</td>
                     </tr>
                     <tr><td>0.3 A</td></tr>
@@ -603,93 +417,119 @@
             </table>
         </details>
     </div>
+    
+    <div class="qa-block">
+        <p><strong>11.</strong> 替换文字（<span class="blur-text">答案</span>）</p>
+        <ul>
+            <li>A. 选项</li>
+            <li>B. 选项</li>
+            <li>C. 选项</li>
+            <li>D. 选项</li>
+        </ul>
+        <details>
+            <summary><i>相关知识</i></summary>
+        </details>
+    </div>
+
+    <div id="pagination-controls">
+        <button id="prev-page">上一页</button>
+        <span id="page-indicator"></span>
+        <button id="next-page">下一页</button>
+    </div>
+
 
     <script>
-    /* * document: 文档。代表整个HTML页面。
-     * addEventListener: 添加事件监听器。这是一个函数，用于告诉浏览器监听某个特定事件（比如'DOMContentLoaded'或'click'），
-     * 并在事件发生时执行指定的函数。
-     * 'DOMContentLoaded': 这是一个事件名称，当初始的 HTML 文档被完全加载和解析完成之后，浏览器就会触发这个事件。
-     * 把我们的代码放在这里面，可以确保在尝试操作页面元素（如题目、选项）时，这些元素已经存在于页面上了。
-     */
     document.addEventListener('DOMContentLoaded', () => {
 
-        // 找到页面上所有 class="qa-block" 的元素，即所有题目区块。
-        const allQuestionBlocks = document.querySelectorAll('.qa-block');
-
-        // forEach 是一个遍历方法，它会对上面找到的每一个题目区块执行我们提供的函数。
-        allQuestionBlocks.forEach(block => {
-            
-            // 在当前题目区块内，找到显示答案的那个 <span> 元素。
-            // querySelector: 查询选择器。用于查找匹配指定CSS选择器的第一个元素。
+        // --- 原有的题目交互逻辑 (保持不变) ---
+        const allQuestionBlocksOriginal = document.querySelectorAll('.qa-block');
+        allQuestionBlocksOriginal.forEach(block => {
             const answerSpan = block.querySelector('.blur-text');
-            // 在当前题目区块内，找到所有的选项 <li> 元素。
             const options = block.querySelectorAll('ul li');
-
-            // 如果这个区块里没有答案或者没有选项，就跳过，避免出错。
-            if (!answerSpan || options.length === 0) {
-                return;
-            }
-
-            /*
-             * textContent: 文本内容。获取一个元素内部的所有文本。
-             * trim(): 来自英文单词 trim，中文释义为“修剪”。用于移除字符串两端的空白字符。
-             * split(' '): 分割。根据指定的字符（这里是空格）将一个字符串分割成一个字符串数组。
-             * 例如 "C D E".split(' ') 会得到一个数组 ['C', 'D', 'E']，这样就同时支持了单选和多选题。
-             */
+            if (!answerSpan || options.length === 0) { return; }
             const correctAnswers = answerSpan.textContent.trim().split(' ');
-            
-            // 标记这道题是否已经回答正确（主要用于单选题）
             let isAnswered = false;
-
-            // 遍历这道题的所有选项
             options.forEach(option => {
-                // 为每一个选项添加'click'（点击）事件的监听。
                 option.addEventListener('click', () => {
-                    // 如果这道题已经回答正确了（针对单选题），就不再执行任何操作。
-                    if (isAnswered) {
-                        return;
-                    }
-
-                    // 提取选项的标识字母，例如 "A. 松香" -> "A"
-                    // substring(0, 1): 提取子字符串。从索引0开始，到索引1结束（不包含1），即提取第一个字符。
+                    if (isAnswered) { return; }
                     const selectedChoice = option.textContent.trim().substring(0, 1);
-                    
-                    /*
-                     * includes(): 包含。这是一个数组方法，用于判断一个数组是否包含一个指定的值。
-                     * 如果 correctAnswers 数组中包含了用户点击的选项，则返回 true。
-                     */
                     if (correctAnswers.includes(selectedChoice)) {
-                        // --- 选择正确 ---
-                        
-                        // classList: 元素的类名列表。
-                        // add(): 添加。向元素的类名列表中添加一个新的类。
                         option.classList.add('correct');
                         answerSpan.classList.add('revealed');
-                        
-                        // 如果是单选题 (答案只有一个)，则将 isAnswered 标记为 true，防止重复或修改答案
-                        if (correctAnswers.length === 1) {
-                            isAnswered = true;
-                        }
-
+                        if (correctAnswers.length === 1) { isAnswered = true; }
                     } else {
-                        // --- 选择错误 ---
                         option.classList.add('incorrect', 'shake');
-
-                        /*
-                         * setTimeout: 设置延时。这是一个函数，可以在指定的毫秒数后执行一个函数或一段代码。
-                         * 这里我们用它在 1000 毫秒（1秒）后，移除红色背景和抖动效果的类。
-                         * - set: 来自英文单词 set，中文释义为“设置”。
-                         * - Timeout: 来自英文单词 timeout，中文释义为“超时、暂停”。
-                         */
                         setTimeout(() => {
-                            // remove(): 移除。从元素的类名列表中移除指定的类。
                             option.classList.remove('incorrect', 'shake');
                         }, 1000);
                     }
                 });
             });
         });
+
+        // --- 新增的分页逻辑 ---
+        const questionsPerPage = 10;
+        const questionBlocks = document.querySelectorAll('.qa-block');
+        const totalQuestions = questionBlocks.length;
+        const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+        let currentPage = 1;
+
+        const paginationControls = document.getElementById('pagination-controls');
+        const prevButton = document.getElementById('prev-page');
+        const nextButton = document.getElementById('next-page');
+        const pageIndicator = document.getElementById('page-indicator');
+
+        function showPage(page) {
+            const startIndex = (page - 1) * questionsPerPage;
+            const endIndex = startIndex + questionsPerPage;
+
+            questionBlocks.forEach((block, index) => {
+                block.classList.remove('active-page');
+                if (index >= startIndex && index < endIndex) {
+                    block.classList.add('active-page');
+                }
+            });
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            if (totalPages <= 1) {
+                // 如果只有一页或没有，则不显示分页控件
+                paginationControls.style.display = 'none';
+                return;
+            }
+            
+            // 确保控件是可见的 (在手机屏幕上)
+            // 注意：CSS媒体查询会处理在桌面端隐藏它的逻辑
+            paginationControls.style.display = 'flex'; 
+
+            pageIndicator.textContent = `第 ${currentPage} / ${totalPages} 页`;
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
+        }
+
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+                window.scrollTo(0, 0); // 翻页后自动滚动到页面顶部
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+                window.scrollTo(0, 0); // 翻页后自动滚动到页面顶部
+            }
+        });
+        
+        // --- 初始加载时执行 ---
+        // 修改后的逻辑：只要有题目，就执行分页显示，由showPage内部的逻辑决定是否显示翻页按钮
+        if (totalQuestions > 0) {
+            showPage(currentPage); // 默认显示第一页
+        }
     });
-    </script>
+</script>
 </body>
 </html>
